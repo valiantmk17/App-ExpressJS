@@ -4,6 +4,32 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/auth');
 
+const permissionAdmin = [
+  {
+    menuName: 'Employee',
+    menuUrl: '/employee',
+    access: true,
+  },
+  {
+    menuName: 'Absensi',
+    menuUrl: '/absensi',
+    access: true,
+  },
+];
+
+const permissionStaff = [
+  {
+    menuName: 'Employee',
+    menuUrl: '/employee',
+    access: false,
+  },
+  {
+    menuName: 'Absensi',
+    menuUrl: '/absensi',
+    access: true,
+  },
+];
+
 const loginUser = async (req, res) => {
   try {
     // Panggil model authLogin untuk mendapatkan data pengguna
@@ -22,6 +48,15 @@ const loginUser = async (req, res) => {
           expiresIn: config.expired,
         });
 
+        // Atur permission pengguna berdasarkan peran (role)
+        let userPermission = [];
+        if (user.role === 'admin') {
+          userPermission = permissionAdmin;
+        } else {
+          userPermission = permissionStaff;
+        }
+
+
         // Kirim respons sukses bersama dengan token
         res.status(200).json(
           response.getStandardResponse(res.statusCode, 'Login Success', {
@@ -30,6 +65,7 @@ const loginUser = async (req, res) => {
             email: user.email,
             accessToken: token,
             role: user.role,
+            permission: userPermission,
           })
         );
       } else {
