@@ -2,7 +2,7 @@ const dbPool = require('../config/database');
 const sql = require('mssql');
 
 const authLogin = async (body) => {
-    const sqlQuery = 'SELECT id, name, email, password FROM users WHERE email = @email';
+    const sqlQuery = 'SELECT id, name, email, role, password FROM users WHERE email = @email';
 
     try {
         console.log('Input data:', body); // Menampilkan data input ke dalam console log
