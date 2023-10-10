@@ -6,26 +6,36 @@ const config = require('../config/auth');
 
 const permissionAdmin = [
   {
-    menuName: 'Employee',
-    menuUrl: '/employee',
+    menuName: 'overviewStaff',
+    menuUrl: '/home',
+    access: false,
+  },
+  {
+    menuName: 'overviewAdmin',
+    menuUrl: '/homehr',
     access: true,
   },
   {
     menuName: 'Absensi',
-    menuUrl: '/absensi',
+    menuUrl: '/absen',
     access: true,
   },
 ];
 
 const permissionStaff = [
   {
-    menuName: 'Employee',
-    menuUrl: '/employee',
+    menuName: 'overviewStaff',
+    menuUrl: '/home',
+    access: true,
+  },
+  {
+    menuName: 'overviewAdmin',
+    menuUrl: '/homehr',
     access: false,
   },
   {
     menuName: 'Absensi',
-    menuUrl: '/absensi',
+    menuUrl: '/absen',
     access: true,
   },
 ];
