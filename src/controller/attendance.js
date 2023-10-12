@@ -71,7 +71,6 @@ const updateAttendance = async (req, res) => {
 
 const deleteAttendance = async (req, res) => {
   const attendanceId = req.params.id;
-  const userId = req.userId; // Menggunakan ID pengguna dari middleware
 
   try {
     await attendanceModel.deleteAttendance(attendanceId);
