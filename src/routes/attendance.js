@@ -5,7 +5,8 @@ const router = express.Router();
 
 router.get('/', attendanceController.getAllAttendance);
 router.post('/',[authJwt.verifyToken], attendanceController.createNewAttendance);
-router.patch('/:id', attendanceController.updateAttendance);
+router.patch('/:id',[authJwt.verifyToken], attendanceController.updateAttendance);
 router.delete('/:id', attendanceController.deleteAttendance);
 
 module.exports = router;
+ 

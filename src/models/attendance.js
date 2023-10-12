@@ -9,19 +9,17 @@ const getAllAttendance = async () => {
   }
 }
 
-const createNewAttendance = async (id_users, date, status) => {
+const createNewAttendance = async (userId, date, status) => {
   try {
     const sqlQuery = `
       INSERT INTO attendance (id_users, date, status)
-      VALUES (@id_users, @date, @status)
+      VALUES ('${userId}', '${date}', '${status}')
     `;
 
     const result = await dbPool.query(sqlQuery, {
-      replacements: {
-        id_users,
+        userId,
         date,
         status,
-      },
     });
 
     return result;
@@ -30,21 +28,18 @@ const createNewAttendance = async (id_users, date, status) => {
   }
 };
 
-
 const updateAttendance = async (id, date, status) => {
   const sqlQuery = `
     UPDATE attendance
-    SET date = @date, status = @status
-    WHERE id = @id
+    SET date = '${date}', status = '${status}'
+    WHERE id = '${id}'
   `;
 
   try {
     const result = await dbPool.query(sqlQuery, {
-      replacements: {
         id,
         date,
         status,
-      },
     });
 
     return result;
@@ -56,15 +51,15 @@ const updateAttendance = async (id, date, status) => {
 const deleteAttendance = async (id) => {
   const sqlQuery = `
     DELETE FROM attendance
-    WHERE id = @id
+    WHERE id = '${id}'
   `;
 
   try {
     const result = await dbPool.query(sqlQuery, {
-      replacements: {
         id,
-      },
     });
+
+    return result;
   } catch (error) {
     throw error;
   }

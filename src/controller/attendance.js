@@ -1,4 +1,6 @@
 const attendanceModel = require('../models/attendance');
+const jwt = require("jsonwebtoken");
+const config = require("../config/auth.js"); 
 
 const getAllAttendance = async (req, res) => {
   try {
@@ -17,8 +19,19 @@ const getAllAttendance = async (req, res) => {
 };
 
 const createNewAttendance = async (req, res) => {
+  const { date, status } = req.body;
+  const token = req.headers["authorization"];
+
+  if (!token) {
+    return res.status(403).json({
+      message: "No token provided!",
+    });
+  }
+
   try {
-    const { userId, date, status } = req.body;
+    const decodedToken = jwt.verify(token.replace("Bearer ", ""), config.secret);
+    const userId = decodedToken.id;
+
     await attendanceModel.createNewAttendance(userId, date, status);
 
     res.json({
@@ -58,6 +71,7 @@ const updateAttendance = async (req, res) => {
 
 const deleteAttendance = async (req, res) => {
   const attendanceId = req.params.id;
+  const userId = req.userId; // Menggunakan ID pengguna dari middleware
 
   try {
     await attendanceModel.deleteAttendance(attendanceId);
