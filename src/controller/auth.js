@@ -53,7 +53,7 @@ const loginUser = async (req, res) => {
 
       if (passwordIsValid) {
         // Jika kata sandi cocok, buat token JWT
-        const token = jwt.sign({ id: user.id, role: user.role, }, config.secret, {
+        const token = jwt.sign({ id: user.id, name: user.name, role: user.role, }, config.secret, {
           algorithm: config.algorithm,
           expiresIn: config.expired,
         });

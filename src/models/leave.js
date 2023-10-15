@@ -9,16 +9,16 @@ const getAllLeave = async () => {
   }
 }
 
-const createNewLeave = async (userId, name, role, type, reason, date, period, phone, emergency) => {
+const createNewLeave = async (userId, userName, role, type, reason, date, period, phone, emergency) => {
   try {
     const sqlQuery = `
       INSERT INTO leave (id_users, name, role, type, reason, date, period, phone, emergency) 
-      VALUES ('${userId}', '${name}', '${role}', '${type}', '${reason}', '${date}', '${period}', '${phone}', '${emergency}')
+      VALUES ('${userId}', '${userName}', '${role}', '${type}', '${reason}', '${date}', '${period}', '${phone}', '${emergency}')
     `;
 
     const result = await dbPool.query(sqlQuery, {
         userId,
-        name,
+        userName,
         role,
         type,
         reason,
@@ -34,17 +34,16 @@ const createNewLeave = async (userId, name, role, type, reason, date, period, ph
   }
 };
 
-const updateLeave = async (id, name, role, type, reason, date, period, phone, emergency) => {
+const updateLeave = async (id, role, type, reason, date, period, phone, emergency, status) => {
   const sqlQuery = `
     UPDATE leave 
-    SET name='${name}', role='${role}', type='${type}', reason='${reason}', date='${date}', period='${period}', phone='${phone}', emergency='${emergency}' 
+    SET role='${role}', type='${type}', reason='${reason}', date='${date}', period='${period}', phone='${phone}', emergency='${emergency}', status='${status}' 
     WHERE id='${id}'
     `;
 
   try {
     const result = await dbPool.query(sqlQuery, {
         id,
-        name,
         role,
         type,
         reason,
@@ -52,6 +51,7 @@ const updateLeave = async (id, name, role, type, reason, date, period, phone, em
         period,
         phone,
         emergency,
+        status,
     });
 
     return result;

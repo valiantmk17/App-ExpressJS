@@ -9,15 +9,16 @@ const getAllAttendance = async () => {
   }
 }
 
-const createNewAttendance = async (userId, date, status) => {
+const createNewAttendance = async (userId, userName, date, status) => {
   try {
     const sqlQuery = `
-      INSERT INTO attendance (id_users, date, status)
-      VALUES ('${userId}', '${date}', '${status}')
+      INSERT INTO attendance (id_users, user_name, date, status)
+      VALUES ('${userId}', '${userName}', '${date}', '${status}')
     `;
 
     const result = await dbPool.query(sqlQuery, {
         userId,
+        userName,
         date,
         status,
     });

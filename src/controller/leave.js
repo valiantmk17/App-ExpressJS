@@ -19,7 +19,7 @@ const getAllLeave = async (req, res) => {
 }
 
 const createNewLeave = async (req, res) => {
-  const { name, role, type, reason, date, period, phone, emergency } = req.body;
+  const { name, role, type, reason, date, period, phone, emergency, status } = req.body;
   const token = req.headers["authorization"];
 
   if (!token) {
@@ -31,8 +31,9 @@ const createNewLeave = async (req, res) => {
   try {
     const decodedToken = jwt.verify(token.replace("Bearer ", ""), config.secret);
     const userId = decodedToken.id;
+    const userName = decodedToken.name;
 
-    await leaveModels.createNewLeave(userId, name, role, type, reason, date, period, phone, emergency);
+    await leaveModels.createNewLeave(userId, userName, role, type, reason, date, period, phone, emergency, status);
 
     res.json({
       message: "CREATE new user success",
@@ -48,17 +49,15 @@ const createNewLeave = async (req, res) => {
 
 const updateLeave = async (req, res) => {
   const leaveId = req.params.id;
-  const { name, role, type, reason, date, period, phone, emergency } = req.body;
+  const { role, type, reason, date, period, phone, emergency, status } = req.body;
 
   try {
-    await leaveModels.updateLeave(leaveId, name, role, type, reason, date, period, phone, emergency);
+    await leaveModels.updateLeave(leaveId, role, type, reason, date, period, phone, emergency, status);
 
     res.json({
       message: "UPDATE user success",
       body: {
         id: leaveId,
-        leaveId,
-        name,
         role,
         type,
         reason,
@@ -66,6 +65,7 @@ const updateLeave = async (req, res) => {
         period,
         phone,
         emergency,
+        status,
       }
     });
   } catch (error) {

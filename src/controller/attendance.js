@@ -31,8 +31,9 @@ const createNewAttendance = async (req, res) => {
   try {
     const decodedToken = jwt.verify(token.replace("Bearer ", ""), config.secret);
     const userId = decodedToken.id;
+    const userName = decodedToken.name;
 
-    await attendanceModel.createNewAttendance(userId, date, status);
+    await attendanceModel.createNewAttendance(userId, userName, date, status);
 
     res.json({
       message: "CREATE new attendance success",
