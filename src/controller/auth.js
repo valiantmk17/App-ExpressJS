@@ -18,12 +18,12 @@ const PermissionHR = [
   {
     menuName: 'attendance',
     menuUrl: '/absen',
-    access: false,
+    access: true,
   },
   {
     menuName: 'leave',
     menuUrl: '/leave',
-    access: false,
+    access: true,
   },
   {
     menuName: 'leaveHD',

@@ -7,7 +7,16 @@ const getAllLeave = async () => {
   } catch (error) {
     throw error;
   }
-}
+};
+
+const getIdLeave = async (userId) => {
+  try {
+    const result = await dbPool.query(`SELECT * FROM leave WHERE id_users = '${userId}' `)
+    return result.recordset
+  } catch (error) {
+    throw error
+  }
+};
 
 const createNewLeave = async (userId, userName, role, type, reason, date, period, phone, emergency) => {
   try {
@@ -79,6 +88,7 @@ const deleteLeave = async (id) => {
 
 module.exports = {
   getAllLeave, // Perbarui nama fungsi ini untuk sesuai dengan nama yang benar
+  getIdLeave,
   createNewLeave,
   updateLeave,
   deleteLeave,

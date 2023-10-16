@@ -16,7 +16,34 @@ const getAllLeave = async (req, res) => {
       serverMessage: error.message,
     });
   }
-}
+};
+
+const getIdLeave = async (req, res) => {
+  const token = req.headers["authorization"];
+
+  if (!token) {
+    return res.status(403).json({
+      message: "No token provided!",
+    });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token.replace("Bearer ", ""), config.secret);
+    const userId = decodedToken.id;
+
+    const dataDB = await leaveModels.getIdLeave(userId);
+
+    res.json({
+      message: "GET all data success",
+      data: dataDB,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      serverMessage: error.message,
+    });
+  }
+};
 
 const createNewLeave = async (req, res) => {
   const { name, role, type, reason, date, period, phone, emergency, status } = req.body;
@@ -95,6 +122,7 @@ const deleteLeave = async (req, res) => {
 
 module.exports = {
   getAllLeave,
+  getIdLeave,
   createNewLeave,
   updateLeave,
   deleteLeave,
