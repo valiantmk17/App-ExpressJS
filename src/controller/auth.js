@@ -4,38 +4,101 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/auth');
 
-const permissionAdmin = [
+const PermissionHR = [  
   {
-    menuName: 'overviewStaff',
+    menuName: 'home',
     menuUrl: '/home',
     access: false,
   },
   {
-    menuName: 'overviewAdmin',
-    menuUrl: '/homehr',
+    menuName: 'homeHR',
+    menuUrl: '/home-hr',
     access: true,
   },
   {
-    menuName: 'Absensi',
+    menuName: 'attendance',
     menuUrl: '/absen',
-    access: true,
+    access: false,
+  },
+  {
+    menuName: 'leave',
+    menuUrl: '/leave',
+    access: false,
+  },
+  {
+    menuName: 'leaveHD',
+    menuUrl: 'leave-hd',
+    access: false,
+  },
+  {
+    menuName: 'request',
+    menuUrl: 'request',
+    access: false,
   },
 ];
 
-const permissionStaff = [
+const PermissionStaff = [  
   {
-    menuName: 'overviewStaff',
+    menuName: 'home',
     menuUrl: '/home',
     access: true,
   },
   {
-    menuName: 'overviewAdmin',
-    menuUrl: '/homehr',
+    menuName: 'homeHR',
+    menuUrl: '/home-hr',
     access: false,
   },
   {
-    menuName: 'Absensi',
+    menuName: 'attendance',
     menuUrl: '/absen',
+    access: true,
+  },
+  {
+    menuName: 'leave',
+    menuUrl: '/leave',
+    access: true,
+  },
+  {
+    menuName: 'leaveHD',
+    menuUrl: 'leave-hd',
+    access: false,
+  },
+  {
+    menuName: 'request',
+    menuUrl: 'request',
+    access: false,
+  },
+];
+
+const PermissionHD = [  
+  {
+    menuName: 'home',
+    menuUrl: '/home',
+    access: true,
+  },
+  {
+    menuName: 'homeHR',
+    menuUrl: '/home-hr',
+    access: false,
+  },
+  {
+    menuName: 'attendance',
+    menuUrl: '/absen',
+    access: true,
+  },
+  {
+    menuName: 'leave',
+    menuUrl: '/leave',
+    access: false,
+  },
+  {
+    menuName: 'leaveHD',
+    menuUrl: 'leave-hd',
+    access: true,
+  },
+  {
+    menuName: 'request',
+    menuUrl: 'request',
     access: true,
   },
 ];
@@ -60,10 +123,12 @@ const loginUser = async (req, res) => {
 
         // Atur permission pengguna berdasarkan peran (role)
         let userPermission = [];
-        if (user.role === 'admin') {
-          userPermission = permissionAdmin;
+        if (user.role === 'HR') {
+          userPermission = permissionHR;
+        } if (user.role === 'HD') {
+          userPermission = permissionHD;
         } else {
-          userPermission = permissionStaff;
+          userPermission = PermissionStaff;
         }
 
 
