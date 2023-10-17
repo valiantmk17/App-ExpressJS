@@ -18,11 +18,11 @@ const getIdLeave = async (userId) => {
   }
 };
 
-const createNewLeave = async (userId, userName, role, type, reason, date, period, phone, emergency) => {
+const createNewLeave = async (userId, userName, role, type, reason, date, period, phone, emergency, status) => {
   try {
     const sqlQuery = `
-      INSERT INTO leave (id_users, name, role, type, reason, date, period, phone, emergency) 
-      VALUES ('${userId}', '${userName}', '${role}', '${type}', '${reason}', '${date}', '${period}', '${phone}', '${emergency}')
+      INSERT INTO leave (id_users, name, role, type, reason, date, period, phone, emergency, status) 
+      VALUES ('${userId}', '${userName}', '${role}', '${type}', '${reason}', '${date}', '${period}', '${phone}', '${emergency}', '${status}')
     `;
 
     const result = await dbPool.query(sqlQuery, {
@@ -35,6 +35,7 @@ const createNewLeave = async (userId, userName, role, type, reason, date, period
         period,
         phone,
         emergency,
+        status,
     });
 
     return result;

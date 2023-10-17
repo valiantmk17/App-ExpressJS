@@ -59,6 +59,7 @@ const createNewLeave = async (req, res) => {
     const decodedToken = jwt.verify(token.replace("Bearer ", ""), config.secret);
     const userId = decodedToken.id;
     const userName = decodedToken.name;
+    const status = 'Pending';
 
     await leaveModels.createNewLeave(userId, userName, role, type, reason, date, period, phone, emergency, status);
 
