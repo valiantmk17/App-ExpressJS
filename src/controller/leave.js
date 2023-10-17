@@ -77,22 +77,15 @@ const createNewLeave = async (req, res) => {
 
 const updateLeave = async (req, res) => {
   const leaveId = req.params.id;
-  const { role, type, reason, date, period, phone, emergency, status } = req.body;
+  const { status } = req.body;
 
   try {
-    await leaveModels.updateLeave(leaveId, role, type, reason, date, period, phone, emergency, status);
+    await leaveModels.updateLeave(leaveId, status);
 
     res.json({
       message: "UPDATE user success",
       body: {
         id: leaveId,
-        role,
-        type,
-        reason,
-        date,
-        period,
-        phone,
-        emergency,
         status,
       }
     });

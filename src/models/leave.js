@@ -44,23 +44,16 @@ const createNewLeave = async (userId, userName, role, type, reason, date, period
   }
 };
 
-const updateLeave = async (id, role, type, reason, date, period, phone, emergency, status) => {
+const updateLeave = async (id, status) => {
   const sqlQuery = `
     UPDATE leave 
-    SET role='${role}', type='${type}', reason='${reason}', date='${date}', period='${period}', phone='${phone}', emergency='${emergency}', status='${status}' 
+    SET status='${status}' 
     WHERE id='${id}'
     `;
 
   try {
     const result = await dbPool.query(sqlQuery, {
         id,
-        role,
-        type,
-        reason,
-        date,
-        period,
-        phone,
-        emergency,
         status,
     });
 
