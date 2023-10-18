@@ -1,6 +1,6 @@
 const attendanceModel = require('../models/attendance');
 const jwt = require("jsonwebtoken");
-const config = require("../config/auth.js"); 
+const config = require("../config/auth.js");
 
 const getAllAttendance = async (req, res) => {
   try {
@@ -9,6 +9,33 @@ const getAllAttendance = async (req, res) => {
     res.json({
       message: "GET all attendance success",
       data: attendanceData,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      serverMessage: error.message,
+    });
+  }
+};
+
+const getIdAttendance = async (req, res) => {
+  const token = req.headers["authorization"];
+
+  if (!token) {
+    return res.status(403).json({
+      message: "No token provided!",
+    });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token.replace("Bearer ", ""), config.secret);
+    const userId = decodedToken.id;
+
+    const dataDB = await attendanceModel.getIdAttendance(userId);
+
+    res.json({
+      message: "GET all data success",
+      data: dataDB,
     });
   } catch (error) {
     res.status(500).json({
@@ -90,6 +117,7 @@ const deleteAttendance = async (req, res) => {
 
 module.exports = {
   getAllAttendance,
+  getIdAttendance,
   createNewAttendance,
   updateAttendance,
   deleteAttendance,

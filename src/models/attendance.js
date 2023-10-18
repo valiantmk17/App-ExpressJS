@@ -9,6 +9,15 @@ const getAllAttendance = async () => {
   }
 }
 
+const getIdAttendance = async (userId) => {
+  try {
+    const result = await dbPool.query(`SELECT * FROM attendance WHERE id_users = '${userId}' `)
+    return result.recordset
+  } catch (error) {
+    throw error
+  }
+};
+
 const createNewAttendance = async (userId, userName, date, status) => {
   try {
     const sqlQuery = `
@@ -68,6 +77,7 @@ const deleteAttendance = async (id) => {
 
 module.exports = {
   getAllAttendance,
+  getIdAttendance,
   createNewAttendance,
   updateAttendance,
   deleteAttendance,
