@@ -2,7 +2,7 @@ const dbPool = require('../config/database');
 
 const getAllLeave = async () => {
   try {
-    const result = await dbPool.query('SELECT * FROM leave')
+    const result = await dbPool.query(`SELECT * FROM leave WHERE role IN ('Staff', 'HR')`)
     return result.recordset;
   } catch (error) {
     throw error;
@@ -17,6 +17,15 @@ const getIdLeave = async (userId) => {
     throw error
   }
 };
+
+  const getHD = async () => {
+    try {
+      const result = await dbPool.query(`SELECT * FROM leave WHERE role = 'HD' `)
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  };
 
 const createNewLeave = async (userId, userName, role, type, reason, date, period, phone, emergency, status) => {
   try {
@@ -83,6 +92,7 @@ const deleteLeave = async (id) => {
 module.exports = {
   getAllLeave, // Perbarui nama fungsi ini untuk sesuai dengan nama yang benar
   getIdLeave,
+  getHD,
   createNewLeave,
   updateLeave,
   deleteLeave,
