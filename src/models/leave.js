@@ -2,7 +2,7 @@ const dbPool = require('../config/database');
 
 const getAllLeave = async () => {
   try {
-    const result = await dbPool.query(`SELECT * FROM leave WHERE role IN ('Staff', 'HR')`)
+    const result = await dbPool.query(`SELECT * FROM leave WHERE role IN ('staff', 'hr')`)
     return result.recordset;
   } catch (error) {
     throw error;
@@ -20,7 +20,7 @@ const getIdLeave = async (userId) => {
 
   const getHD = async () => {
     try {
-      const result = await dbPool.query(`SELECT * FROM leave WHERE role = 'HD' `)
+      const result = await dbPool.query(`SELECT * FROM leave WHERE role = 'hd' `)
       return result.recordset;
     } catch (error) {
       throw error;
