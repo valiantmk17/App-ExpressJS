@@ -8,6 +8,8 @@ router.get('/idAttendance',[authJwt.verifyToken], attendanceController.getIdAtte
 router.post('/',[authJwt.verifyToken], attendanceController.createNewAttendance);
 router.patch('/:id',[authJwt.verifyToken], attendanceController.updateAttendance);
 router.delete('/:id',[authJwt.verifyToken], attendanceController.deleteAttendance);
+router.get('/status', [authJwt.verifyToken], attendanceController.getAttendanceStatus);
+router.post('/leave', [authJwt.verifyToken], attendanceController.applyForLeave);
 
 module.exports = router;
  

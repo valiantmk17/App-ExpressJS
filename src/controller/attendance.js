@@ -123,10 +123,82 @@ const deleteAttendance = async (req, res) => {
   }
 };
 
+const getAttendanceStatus = async (req, res) => {
+  const token = req.headers["authorization"];
+
+  if (!token) {
+    return res.status(403).json({
+      message: "No token provided!",
+    });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token.replace("Bearer ", ""), config.secret);
+    const userId = decodedToken.id;
+    const { date } = req.query;
+
+    const absenStatus = await attendanceModel.checkAttendance(userId, date);
+
+    res.json({
+      message: "GET attendance status success",
+      absenStatus,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      serverMessage: error.message,
+    });
+  }
+};
+
+const applyForLeave = async (req, res) => {
+  const { date, reason } = req.body;
+  const token = req.headers["authorization"];
+
+  if (!token) {
+    return res.status(403).json({
+      message: "No token provided!",
+    });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token.replace("Bearer ", ""), config.secret);
+    const userId = decodedToken.id;
+
+    const sudahAbsen = await attendanceModel.checkAttendance(userId, date);
+
+    if (sudahAbsen) {
+      return res.status(400).json({
+        message: "User has already attended on this date. Cannot apply for leave.",
+      });
+    }
+
+    // Lakukan logika untuk mengajukan cuti, misalnya, menyimpan data izin cuti ke database
+    // atau melibatkan proses bisnis lainnya sesuai dengan kebutuhan aplikasi
+    // ...
+
+    res.json({
+      message: "Leave application submitted successfully",
+      body: {
+        date,
+        reason,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      serverMessage: error.message,
+    });
+  }
+};
+
+
 module.exports = {
   getAllAttendance,
   getIdAttendance,
   createNewAttendance,
   updateAttendance,
   deleteAttendance,
+  getAttendanceStatus,
+  applyForLeave,
 };
