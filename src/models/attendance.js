@@ -18,6 +18,20 @@ const getIdAttendance = async (userId) => {
   }
 };
 
+const checkAttendance = async (userId, date) => {
+  try {
+    const request = dbPool.request();
+    request.input('userId', sql.VarChar, userId);
+    request.input('tanggalAbsen', sql.Date, date);
+
+    const result = await request.query(`SELECT * FROM attendance WHERE id_users = '${userId}' AND date = '${date}'`);
+
+    return result.recordset.length > 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const createNewAttendance = async (userId, userName, date, status) => {
   try {
     const sqlQuery = `
@@ -78,6 +92,7 @@ const deleteAttendance = async (id) => {
 module.exports = {
   getAllAttendance,
   getIdAttendance,
+  checkAttendance,
   createNewAttendance,
   updateAttendance,
   deleteAttendance,

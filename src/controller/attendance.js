@@ -60,6 +60,14 @@ const createNewAttendance = async (req, res) => {
     const userId = decodedToken.id;
     const userName = decodedToken.name;
 
+    const sudahAbsen = await attendanceModel.checkAttendance(userId, date);
+
+    if (sudahAbsen) {
+      return res.status(400).json({
+        message: "User has already attend on this date."
+      })
+    }
+
     await attendanceModel.createNewAttendance(userId, userName, date, status);
 
     res.json({
