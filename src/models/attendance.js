@@ -22,11 +22,25 @@ const checkAttendance = async (userId, date) => {
   try {
     const request = dbPool.request();
     request.input('userId', sql.VarChar, userId);
-    request.input('tanggalAbsen', sql.Date, date);
+    request.input('date', sql.Date, date);
 
-    const result = await request.query(`SELECT * FROM attendance WHERE id_users = '${userId}' AND date = '${date}'`);
+    const result = await request.query(`SELECT * FROM attendance WHERE id_users = @userId AND date = @date`);
 
     return result.recordset.length > 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getAttendanceStatus = async (userId, date) => {
+  try {
+    const request = dbPool.request();
+    request.input('userId', sql.VarChar, userId);
+    request.input('date', sql.Date, date);
+
+    const result = await request.query(`SELECT TOP 1 status FROM attendance WHERE id_users = @userId AND date = @date ORDER BY id DESC`);
+
+    return result.recordset.length > 0 ? result.recordset[0].status : null;
   } catch (error) {
     throw error;
   }

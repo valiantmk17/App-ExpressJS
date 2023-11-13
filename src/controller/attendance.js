@@ -165,6 +165,7 @@ const applyForLeave = async (req, res) => {
     const decodedToken = jwt.verify(token.replace("Bearer ", ""), config.secret);
     const userId = decodedToken.id;
 
+    // Periksa apakah pengguna sudah absen pada tanggal tertentu
     const sudahAbsen = await attendanceModel.checkAttendance(userId, date);
 
     if (sudahAbsen) {
